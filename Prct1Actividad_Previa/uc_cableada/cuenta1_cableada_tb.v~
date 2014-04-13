@@ -1,0 +1,41 @@
+`timescale 1 ns / 10 ps //Directiva que fija la unidad de tiempo de simulaci�n y el paso de simulaci�n
+
+module cuenta1_cableada_tb;
+
+
+reg [2:0] valor;
+reg start, clk;
+wire [3:0] cuenta;
+wire fin; 
+
+
+cuenta1_cableada cachibache(valor,start,clk,cuenta,fin); // instación del módulo
+
+// generación de reloj clk
+always //siempre estará activo al no haber condición
+begin
+clk = 1;
+#20;
+clk = 0;
+#50;
+end
+
+
+initial
+begin
+  $monitor("tiempo=%0d Valor=%b start=%b clk=%b Cuenta=%b fin=%b", $time, valor,start,clk,cuenta,fin);//variables a mostrar
+  $dumpfile("ejecutable.vcd");
+  $dumpvars;
+
+   start = 1;//señal de start 
+   #5;
+   start = 0;
+   #5;
+
+   valor = 3'b111;
+   #450;
+
+  $finish;  //fin simulacion
+
+end
+endmodule
